@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
-# Ce programme permet de regarder l'évolution de la solution en faisant varier
-# les parametres d'entrée de l'algorithme ngsa 2
-
+# This program is used to see the evolution of solutions by changing input of
+#the ngsa 2 algorithm
 
 from random import Random
 from time import time
@@ -126,7 +125,6 @@ def resolve_problem(param,list_var):
     ea.terminator = inspyred.ec.terminators.generation_termination
 
     #Here we change the parameter we want to change :
-    #eval(str(param) + ' = list_var[indice]') this line doesn't work :(
     if param == 'pop_size':
         pop_size = list_var[indice]
     elif param == 'nmb_gen':
@@ -182,7 +180,7 @@ def calcr(ea):
     x = np.array([i[0] for i in tot])
     y = np.array([i[1] for i in tot])
     r = 1 - (sum((y - pred_pareto_ref(x))**2)/sum((y - np.mean(y))**2))
-    print('coefficient  =',r)
+    print('coefficient  = ',r)
 
 
 #==============================================================================
@@ -210,6 +208,7 @@ for indice in range(len(list_var)):
     print('\nTour ',indice,'\n',param,' = ',list_var[indice])
     calcr(resolve_problem(param,list_var))
     t = round(time() - t0,3)
-    print(t,' s')
+    if not affichage :
+        print(t,' s')
 
 print("\n\n\t -- Done --\n\n")
