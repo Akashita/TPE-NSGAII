@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import math
 
-#Bonjour !
+
 #==============================================================================
 # We created some benchmark problems we didn't find in inspyred :
 #==============================================================================
@@ -125,7 +125,7 @@ def resolve_problem(param,list_var):
                    inspyred.ec.variators.gaussian_mutation]
     ea.terminator = inspyred.ec.terminators.generation_termination
 
-    #Here we change the parameter we want to change : 
+    #Here we change the parameter we want to change :
     #eval(str(param) + ' = list_var[indice]') this line doesn't work :(
     if param == 'pop_size':
         pop_size = list_var[indice]
