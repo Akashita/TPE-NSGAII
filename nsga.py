@@ -1,13 +1,24 @@
 # -*- coding: utf-8 -*-
 
+# Ce programme permet de regarder l'évolution de la solution en faisant varier
+# les parametres d'entrée de l'algorithme ngsa 2
+
+
 from random import Random
 from time import time
+
 import inspyred
 from inspyred import ec
 from inspyred.benchmarks import Benchmark
+
 import matplotlib.pyplot as plt
 import numpy as np
 import math
+
+
+#==============================================================================
+# We created some benchmark problems we didn't find in inspyred :
+#==============================================================================
 
 #SCH PROBLEM
 class SCH(Benchmark):
@@ -57,23 +68,25 @@ class FON(Benchmark):
 # Choose problem and parameters
 #==============================================================================
 
+# DISPLAY THE RESULT OF EACH OPTIMISATION (several times):
+affichage = True
+
 # CHOOSE DEFAULT PARAMETERS
 pop_size = 20
 nmb_gen = 40
 p_crossover = 0.5
 p_mutation = 0.5
-affichage = False
+
 
 
 # CHOOSE THE RANGE AND THE STEP OF THE VARIATION
 list_pop_size = [x for x in range(2,1000,10)]
 list_nmb_gen = [x for x in range(5,100,5)]
-list_p_crossover = [x for x in range(42)]
-list_p_mutation = [x for x in range(42)]
+list_p_crossover = [x/10 for x in range(1,11)]
+list_p_mutation = [x/10 for x in range(1,11)]
 
 
-# CHOSE A PROBLEM IN THE LIST
-
+# CHOSE A PROBLEM IN THE LIST :
 problem = SCH()
 # problem = FON(2)
 # problem = inspyred.benchmarks.Kursawe(3)
@@ -88,7 +101,14 @@ problem = SCH()
 #==============================================================================
 # Solve
 #==============================================================================
-def resolve_problem(param):
+
+#Main part of the file : we do the optimisation of the selected problem,
+#param is the "default parameter" we want to change to see his influence
+def resolve_problem(param,list_var):
+    """
+        param : str : the parameter we want to change
+        list_var : list : the list of each value the parameter will take
+    """
     global problem
     global indice
     global affichage
@@ -98,26 +118,25 @@ def resolve_problem(param):
     global p_crossover
     global p_mutation
 
-    global list_pop_size
-    global list_nmb_gen
-    global list_p_crossover
-    global list_p_mutation
-
-
     prng = Random()
     prng.seed(time())
     ea = inspyred.ec.emo.NSGA2(prng)
     ea.variator = [inspyred.ec.variators.blend_crossover,
                    inspyred.ec.variators.gaussian_mutation]
     ea.terminator = inspyred.ec.terminators.generation_termination
+
+    #Here we change the parameter we want to change : 
+    #eval(str(param) + ' = list_var[indice]') this line doesn't work :(
     if param == 'pop_size':
-        pop_size = list_pop_size[indice]
+        pop_size = list_var[indice]
     elif param == 'nmb_gen':
-        nmb_gen = list_nmb_gen[indice]
+        nmb_gen = list_var[indice]
     elif param == 'p_crossover':
-        p_crossover = list_p_crossover[indice]
+        p_crossover = list_var[indice]
     elif param == 'p_mutation':
-        p_mutation = list_p_mutation[indice]
+        p_mutation = list_var[indice]
+
+
     final_pop = ea.evolve(generator=problem.generator,
                           evaluator=problem.evaluator,
                           pop_size=pop_size,
@@ -127,12 +146,12 @@ def resolve_problem(param):
                           mutation_rate=p_mutation,
                           max_generations=nmb_gen)
 
-    
+
 
     if affichage:
-        #==============================================================================
+        #======================================================================
         # Plot
-        #==============================================================================
+        #======================================================================
         final_arc = ea.archive
         x = []
         y = []
@@ -144,15 +163,17 @@ def resolve_problem(param):
         yp = (xp**.5 - 2)**2
         plt.plot(xp, yp, 'r')
         plt.show()
-        
-    return ea    
-    
+    return ea
 
 
+#This function return the optimal pareto for the choosen problem
 def pred_pareto_ref(x):
     y = (x**.5 - 2)**2
     return y
 
+#This function is used to calculate the R² coefficient.
+#This function will surely be removed, because this coefficient doesn't have
+#any sense with what we're doing
 def calcr(ea):
     final_arc = ea.archive
     tot=[]
@@ -161,11 +182,34 @@ def calcr(ea):
     x = np.array([i[0] for i in tot])
     y = np.array([i[1] for i in tot])
     r = 1 - (sum((y - pred_pareto_ref(x))**2)/sum((y - np.mean(y))**2))
-    print(r)
+    print('coefficient  =',r)
 
-for indice in range(10):
-    print('\n',indice,'\npop_size = ',list_pop_size[indice])
-    resolve_problem('pop_size')
-    calcr(resolve_problem('pop_size'))
 
-print("Done")
+#==============================================================================
+# Execution :
+#==============================================================================
+
+if affichage:
+    print("\n\nL'affichage est activé, cela pourrait être génant")
+    affichage = 'o' == input("Conserver l'afichage ? : O/n\n").lower()
+
+
+list_param = ['pop_size','nmb_gen','p_crossover','p_mutation']
+no_name = [list_pop_size , list_nmb_gen , list_p_crossover , list_p_mutation]
+print("\n\nQuel parametre voulez vous faire varier :")
+for i in range(len(list_param)):
+    print(' - ',i,' : ',list_param[i])
+entree = int(input(''))
+
+param = list_param[entree]
+list_var = no_name[entree][:]
+
+
+for indice in range(len(list_var)):
+    t0 = time()
+    print('\nTour ',indice,'\n',param,' = ',list_var[indice])
+    calcr(resolve_problem(param,list_var))
+    t = round(time() - t0,3)
+    print(t,' s')
+
+print("\n\n\t -- Done --\n\n")
