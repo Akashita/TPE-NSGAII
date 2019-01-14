@@ -171,9 +171,9 @@ def resolve_problem(param,list_var):
         # Plot
         #======================================================================
         plt.scatter(x, y, color='b')
-        xp = np.linspace(0, 4, 100)
-        yp = (xp**.5 - 2)**2
-        plt.plot(xp, yp, 'r')
+        #OPTIMIZE: xp = np.linspace(0, 4, 100)
+        #yp = (xp**.5 - 2)**2
+        #plt.plot(xp, yp, 'r')
         plt.show()
 
 
