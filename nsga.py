@@ -153,6 +153,8 @@ def resolve_problem(param,list_var):
 
     final_arc = ea.archive
     fit = []
+    x = []
+    y = []
     for i in final_arc:
         fit.append(i.fitness)
         if affichage:
