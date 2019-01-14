@@ -40,13 +40,18 @@ class SCH(Benchmark):
         return fitness
 
 
+#This function return the optimal pareto for the SCH problem
+def SCH_ref(x):
+    y = (x**.5 - 2)**2
+    return y
+
 # FON PROBLEM
 class FON(Benchmark):
     def __init__(self, dimensions=2):
         self.dimensions = dimensions
         self.nmb_functions = 2
         Benchmark.__init__(self, self.dimensions, self.nmb_functions)
-        self.bounder = ec.Bounder([-4]*self.dimensions,
+        self.bound5er = ec.Bounder([-4]*self.dimensions,
                                   [4]*self.dimensions)
         self.maximize = False
 
@@ -61,6 +66,7 @@ class FON(Benchmark):
             f2 = 1 - np.exp(-np.sum((c + 1/(len(c)**.5))**2))
             fitness.append(ec.emo.Pareto([f1, f2]))
         return fitness
+
 
 
 #==============================================================================
@@ -79,7 +85,7 @@ p_mutation = 0.5
 
 
 # CHOOSE THE RANGE AND THE STEP OF THE VARIATION
-list_pop_size = [x for x in range(2,1000,10)]
+list_pop_size = [x for x in range(2,100,10)]
 list_nmb_gen = [x for x in range(5,100,5)]
 list_p_crossover = [x/10 for x in range(1,11)]
 list_p_mutation = [x/10 for x in range(1,11)]
@@ -145,42 +151,28 @@ def resolve_problem(param,list_var):
                           max_generations=nmb_gen)
 
 
+    final_arc = ea.archive
+    fit = []
+    for i in final_arc:
+        fit.append(i.fitness)
+        if affichage:
+            x.append(i.fitness[0])
+            y.append(i.fitness[1])
+    hypervol = inspyred.ec.analysis.hypervolume(fit, reference_point=None) #Calculation of pareto hypervolume
+                                                                            #WARNING: we have to check if the reference_point
+                                                                            #is the same in the reference_pareto and in the
+                                                                            #calculated pareto.
+    print("\n hypervolume",hypervol,"\n")
 
     if affichage:
         #======================================================================
         # Plot
         #======================================================================
-        final_arc = ea.archive
-        x = []
-        y = []
-        for f in final_arc:
-            x.append(f.fitness[0])
-            y.append(f.fitness[1])
         plt.scatter(x, y, color='b')
         xp = np.linspace(0, 4, 100)
         yp = (xp**.5 - 2)**2
         plt.plot(xp, yp, 'r')
         plt.show()
-    return ea
-
-
-#This function return the optimal pareto for the choosen problem
-def pred_pareto_ref(x):
-    y = (x**.5 - 2)**2
-    return y
-
-#This function is used to calculate the R² coefficient.
-#This function will surely be removed, because this coefficient doesn't have
-#any sense with what we're doing
-def calcr(ea):
-    final_arc = ea.archive
-    tot=[]
-    for i in final_arc:
-        tot.append([i.fitness[0],i.fitness[1]])
-    x = np.array([i[0] for i in tot])
-    y = np.array([i[1] for i in tot])
-    r = 1 - (sum((y - pred_pareto_ref(x))**2)/sum((y - np.mean(y))**2))
-    print('coefficient  = ',r)
 
 
 #==============================================================================
@@ -206,7 +198,7 @@ list_var = no_name[entree][:]
 for indice in range(len(list_var)):
     t0 = time()
     print('\nTour ',indice,'\n',param,' = ',list_var[indice])
-    calcr(resolve_problem(param,list_var))
+    resolve_problem(param,list_var)
     t = round(time() - t0,3)
     if not affichage :
         print(t,' s')
