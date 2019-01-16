@@ -176,6 +176,19 @@ def resolve_problem(param,list_var):
         #plt.plot(xp, yp, 'r')
         plt.show()
 
+#==============================================================================
+# Functions :
+#==============================================================================
+
+def euclidian_distance(pointA,pointB):
+    """return the euclidian distance between two point"""
+    if len(pointB) != len(pointA):
+        print("Erreur : les points ne sont pas dans la même dimension")
+    somme = 0
+    for i in range(len(pointA)):
+        somme += (pointA[i] - pointB[i])**2
+    return math.sqrt(somme)
+
 
 #==============================================================================
 # Execution :

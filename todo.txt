@@ -1,6 +1,7 @@
 TODO :
 -generation de l'ensemble des points du pareto de reference
     (en gerant les parametres, (le pas))
+
 -calcul de toutes les distances euclidiennes entre un point du pareto trouvé
       et le pareto de reference et selection de la plus courte
       https://www.hindawi.com/journals/ddns/2011/569784/fig4/
