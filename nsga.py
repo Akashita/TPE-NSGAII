@@ -90,18 +90,47 @@ list_nmb_gen = [x for x in range(5,100,5)]
 list_p_crossover = [x/10 for x in range(1,11)]
 list_p_mutation = [x/10 for x in range(1,11)]
 
+liste_problemes = ['SCH','FON','kursawe','DTLZ1','DTLZ2','DTLZ3','DTLZ4','DTLZ5','DTLZ6','DTLZ7']
+print("\n\nQuel probleme voulez vous utiliser :")
+entree = -1
+while entree < 0 or entree > len(liste_problemes):
+    for i in range(len(liste_problemes)):
+        print(' - ',i,' : ',liste_problemes[i])
+    entree = int(input(''))
 
-# CHOSE A PROBLEM IN THE LIST :
-problem = SCH()
-# problem = FON(2)
-# problem = inspyred.benchmarks.Kursawe(3)
-# problem = inspyred.benchmarks.DTLZ1(dimensions=2, objectives=2)
-# problem = inspyred.benchmarks.DTLZ2()
-# problem = inspyred.benchmarks.DTLZ3()
-# problem = inspyred.benchmarks.DTLZ4()
-# problem = inspyred.benchmarks.DTLZ5()
-# problem = inspyred.benchmarks.DTLZ6()
-# problem = inspyred.benchmarks.DTLZ7(dimensions=3, objectives=3)
+dimension = 2
+if entree == 0:
+    problem = SCH()
+
+elif entree == 1:
+    problem = FON(2)
+
+elif entree == 2:
+    problem = inspyred.benchmarks.Kursawe(3)
+    dimension = 3
+
+elif entree == 3:
+    problem = inspyred.benchmarks.DTLZ1(dimensions=2, objectives=2)
+
+elif entree == 4:
+    problem = inspyred.benchmarks.DTLZ2()
+
+elif entree == 5:
+    problem = inspyred.benchmarks.DTLZ3()
+
+elif entree == 6:
+    problem = inspyred.benchmarks.DTLZ4()
+
+elif entree == 7:
+    problem = inspyred.benchmarks.DTLZ5()
+
+elif entree == 8:
+    problem = inspyred.benchmarks.DTLZ6()
+
+elif entree == 9:
+    problem = inspyred.benchmarks.DTLZ7(dimensions=3, objectives=3)
+    dimension = 3
+
 
 #==============================================================================
 # Solve
@@ -188,7 +217,6 @@ def euclidian_distance(pointA,pointB):
     for i in range(len(pointA)):
         somme += (pointA[i] - pointB[i])**2
     return math.sqrt(somme)
-
 
 #==============================================================================
 # Execution :
