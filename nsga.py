@@ -81,6 +81,7 @@ pop_size = 20
 nmb_gen = 40
 p_crossover = 0.5
 p_mutation = 0.5
+dimension = 2
 
 
 
@@ -152,25 +153,15 @@ def resolve_problem(param,list_var):
 
 
     final_arc = ea.archive
-    fit = []
-    x = []
-    y = []
-    for i in final_arc:
-        fit.append(i.fitness)
-        if affichage:
-            x.append(i.fitness[0])
-            y.append(i.fitness[1])
-    hypervol = inspyred.ec.analysis.hypervolume(fit, reference_point=None) #Calculation of pareto hypervolume
-                                                                            #WARNING: we have to check if the reference_point
-                                                                            #is the same in the reference_pareto and in the
-                                                                            #calculated pareto.
+    coords = transform_coord(final_arc)
+    hypervol = inspyred.ec.analysis.hypervolume(coords[3], reference_point=None) #Calculation of pareto hypervolume                                                                        #calculated pareto.
     print("\n hypervolume",hypervol,"\n")
 
     if affichage:
         #======================================================================
         # Plot
         #======================================================================
-        plt.scatter(x, y, color='b')
+        plt.scatter(coords[0], coords[1], color='b')
         #OPTIMIZE: xp = np.linspace(0, 4, 100)
         #yp = (xp**.5 - 2)**2
         #plt.plot(xp, yp, 'r')
@@ -179,6 +170,26 @@ def resolve_problem(param,list_var):
 #==============================================================================
 # Functions :
 #==============================================================================
+
+def transform_coord(final_arc):
+    fit = []
+    x = []
+    y = []
+    z = []
+    for i in final_arc:
+        fit.append(i.fitness)
+        if affichage:
+            x.append(i.fitness[0])
+            y.append(i.fitness[1])
+            if dimension == 3:
+                z.append(i.fitness[2])
+    return x,y,z,fit
+
+
+
+
+
+
 
 def euclidian_distance(pointA,pointB):
     """return the euclidian distance between two point"""
