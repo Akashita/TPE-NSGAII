@@ -108,7 +108,6 @@ elif entree == 1:
 
 elif entree == 2:
     problem = inspyred.benchmarks.Kursawe(3)
-    dimension = 3
 
 elif entree == 3:
     problem = inspyred.benchmarks.DTLZ1(dimensions=2, objectives=2)
@@ -183,7 +182,6 @@ def resolve_problem(param,list_var):
 
     final_arc = ea.archive
     coords = transform_coord(final_arc)
-    print(coords[3])
     hypervol = inspyred.ec.analysis.hypervolume(coords[3], reference_point=None) #Calculation of pareto hypervolume                                                                        #calculated pareto.
     print("\n hypervolume",hypervol,"\n")
 

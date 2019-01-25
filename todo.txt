@@ -13,3 +13,25 @@ TODO :
 Dans plus longtemps:
 -evaluer le temps de resolution par rapport à la variation des parametres
 -passer à plusieurs dimensions
+
+
+
+ATTENTION : Pour résoudre l'erreur suivante :
+
+Traceback (most recent call last):
+  File "/home/nakashita/Nextcloud/TPE NSGAII/TPE-NSGAII/nsga.py", line 271, in <module>
+    resolve_problem(param,list_var)
+  File "/home/nakashita/Nextcloud/TPE NSGAII/TPE-NSGAII/nsga.py", line 183, in resolve_problem
+    max_generations=nmb_gen)
+  File "/usr/lib/python3.7/site-packages/inspyred/ec/emo.py", line 147, in evolve
+    return ec.EvolutionaryComputation.evolve(self, generator, evaluator, pop_size, seeds, maximize, bounder, **args)
+  File "/usr/lib/python3.7/site-packages/inspyred/ec/ec.py", line 434, in evolve
+    initial_fit = evaluator(candidates=initial_cs, args=self._kwargs)
+  File "/usr/lib/python3.7/site-packages/inspyred/benchmarks.py", line 508, in evaluator
+    fit = [0.5 * reduce(lambda x,y: x*y, c[:self.objectives-1]) * (1 + gval)]
+NameError: name 'reduce' is not defined
+
+
+la ligne suivante a été ajoutée dans le fichier benchmarks.py :
+
+from functools import reduce
