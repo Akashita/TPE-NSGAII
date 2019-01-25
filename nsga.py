@@ -11,6 +11,7 @@ from inspyred import ec
 from inspyred.benchmarks import Benchmark
 
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 import math
 
@@ -81,7 +82,6 @@ pop_size = 20
 nmb_gen = 40
 p_crossover = 0.5
 p_mutation = 0.5
-dimension = 2
 
 
 
@@ -183,18 +183,33 @@ def resolve_problem(param,list_var):
 
     final_arc = ea.archive
     coords = transform_coord(final_arc)
+    print(coords[3])
     hypervol = inspyred.ec.analysis.hypervolume(coords[3], reference_point=None) #Calculation of pareto hypervolume                                                                        #calculated pareto.
     print("\n hypervolume",hypervol,"\n")
 
     if affichage:
-        #======================================================================
-        # Plot
-        #======================================================================
-        plt.scatter(coords[0], coords[1], color='b')
-        #OPTIMIZE: xp = np.linspace(0, 4, 100)
-        #yp = (xp**.5 - 2)**2
-        #plt.plot(xp, yp, 'r')
-        plt.show()
+        if dimension == 2:
+            #======================================================================
+            # Plot
+            #======================================================================
+            plt.scatter(coords[0], coords[1], color='b')
+            plt.show()
+
+        elif dimension == 3:
+            fig = plt.figure()
+            ax = fig.add_subplot(111, projection='3d')
+
+            x = coords[0]
+            y = coords[1]
+            z = coords[2]
+            ax.scatter(x, y, z, c='r', marker='o')
+
+
+            ax.set_xlabel('Dim 1')
+            ax.set_ylabel('Dim 2')
+            ax.set_zlabel('Dim 3')
+
+            plt.show()
 
 #==============================================================================
 # Functions :
