@@ -90,8 +90,8 @@ list_pop_size = [x for x in range(2,100,10)]
 list_nmb_gen = [x for x in range(5,100,5)]
 list_p_crossover = [x/10 for x in range(1,11)]
 list_p_mutation = [x/10 for x in range(1,11)]
-
-liste_problemes = ['SCH','FON','kursawe','DTLZ1','DTLZ2','DTLZ3','DTLZ4','DTLZ5','DTLZ6','DTLZ7']
+5
+liste_problemes = ['SCH','FON','kursawe','DTLZ1','DTLZ2','DTLZ3','DTLZ4','DTLZ5','DTLZ6','DTLZ7', "Ackley (Multi-dimension | One objective)"]
 print("\n\nQuel probleme voulez vous utiliser :")
 entree = -1
 while entree < 0 or entree > len(liste_problemes):
@@ -107,7 +107,7 @@ elif entree == 1:
     problem = FON(2)
 
 elif entree == 2:
-    problem = inspyred.benchmarks.Kursawe(3)
+    problem = inspyred.benchmarks.Kursawe(3) #Trois dimensions 1 objectif ??
 
 elif entree == 3:
     problem = inspyred.benchmarks.DTLZ1(dimensions=2, objectives=2)
@@ -130,6 +130,10 @@ elif entree == 8:
 elif entree == 9:
     problem = inspyred.benchmarks.DTLZ7(dimensions=3, objectives=3)
     dimension = 3
+
+elif entree == 10:
+    problem = inspyred.benchmarks.Schwefel(dimensions=2)
+
 
 
 #==============================================================================
@@ -203,9 +207,9 @@ def resolve_problem(param,list_var):
             ax.scatter(x, y, z, c='r', marker='o')
 
 
-            ax.set_xlabel('Dim 1')
-            ax.set_ylabel('Dim 2')
-            ax.set_zlabel('Dim 3')
+            ax.set_xlabel('objective 1')
+            ax.set_ylabel('objective 2')
+            ax.set_zlabel('objective 3')
 
             plt.show()
 

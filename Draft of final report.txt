@@ -1,0 +1,16 @@
+Multi-objective optimization
+Main article: Multi-objective optimization
+
+Adding more than one objective to an optimization problem adds complexity. For example, to optimize a structural design, one would desire a design that is both light and rigid. When two objectives conflict, a trade-off must be created. There may be one lightest design, one stiffest design, and an infinite number of designs that are some compromise of weight and rigidity. The set of trade-off designs that cannot be improved upon according to one criterion without hurting another criterion is known as the Pareto set. The curve created plotting weight against stiffness of the best designs is known as the Pareto frontier.
+
+A design is judged to be "Pareto optimal" (equivalently, "Pareto efficient" or in the Pareto set) if it is not dominated by any other design: If it is worse than another design in some respects and no better in any respect, then it is dominated and is not Pareto optimal.
+
+The choice among "Pareto optimal" solutions to determine the "favorite solution" is delegated to the decision maker. In other words, defining the problem as multi-objective optimization signals that some information is missing: desirable objectives are given but combinations of them are not rated relative to each other. In some cases, the missing information can be derived by interactive sessions with the decision maker.
+
+Multi-objective optimization problems have been generalized further into vector optimization problems where the (partial) ordering is no longer given by the Pareto ordering.
+
+
+An optimization problem can be represented in the following way:
+
+    Given: a function f : A → R {\displaystyle f\colon A\to \mathbb {R} } {\displaystyle f\colon A\to \mathbb {R} } from some set A {\displaystyle A} A to the real numbers
+    Sought: an element x 0 ∈ A {\displaystyle \mathbf {x} _{0}\in A} {\displaystyle \mathbf {x} _{0}\in A} such that f ( x 0 ) ≤ f ( x ) {\displaystyle f\left(\mathbf {x} _{0}\right)\leq f\left(\mathbf {x} \right)} {\displaystyle f\left(\mathbf {x} _{0}\right)\leq f\left(\mathbf {x} \right)} for all x ∈ A {\displaystyle \mathbf {x} \in A} {\displaystyle \mathbf {x} \in A} ("minimization") or such that f ( x 0 ) ≥ f ( x ) {\displaystyle f\left(\mathbf {x} _{0}\right)\geq f\left(\mathbf {x} \right)} {\displaystyle f\left(\mathbf {x} _{0}\right)\geq f\left(\mathbf {x} \right)} for all x ∈ A {\displaystyle \mathbf {x} \in A} {\displaystyle \mathbf {x} \in A} ("maximization").

@@ -14,6 +14,13 @@ Dans plus longtemps:
 -evaluer le temps de resolution par rapport à la variation des parametres
 -passer à plusieurs dimensions
 
+A lire : https://stackoverflow.com/questions/14535690/number-of-decision-variables-vs-objective-space-dimension
+        https://en.wikipedia.org/wiki/Mathematical_optimization#Optimization_problems
+        https://en.wikipedia.org/wiki/Multi-objective_optimization
+
+
+Regarder dans Benchmark la liste des problems single-objectif
+
 
 
 ATTENTION : Pour résoudre l'erreur suivante :
