@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # This program is used to see the evolution of solutions by changing input of
-#the ngsa 2 algorithm
+# the ngsa2 algorithm
 
 from random import Random
 from time import time
@@ -17,7 +17,7 @@ import math
 
 
 #==============================================================================
-# We created some benchmark problems we didn't find in inspyred :
+# Custom problems  :
 #==============================================================================
 
 #SCH PROBLEM
@@ -40,11 +40,14 @@ class SCH(Benchmark):
             fitness.append(ec.emo.Pareto([f1, f2]))
         return fitness
 
-
 #This function return the optimal pareto for the SCH problem
 def SCH_ref(x):
     y = (x**.5 - 2)**2
     return y
+
+
+
+
 
 # FON PROBLEM
 class FON(Benchmark):
@@ -91,7 +94,7 @@ list_nmb_gen = [x for x in range(5,100,5)]
 list_p_crossover = [x/10 for x in range(1,11)]
 list_p_mutation = [x/10 for x in range(1,11)]
 5
-liste_problemes = ['SCH','FON','kursawe','DTLZ1','DTLZ2','DTLZ3','DTLZ4','DTLZ5','DTLZ6','DTLZ7', "Ackley (Multi-dimension | One objective)"]
+liste_problemes = ['SCH','FON','kursawe','DTLZ1','DTLZ2','DTLZ3','DTLZ4','DTLZ5','DTLZ6','DTLZ7', "Schwefel (Multi-dimension | One objective)"]
 print("\n\nQuel probleme voulez vous utiliser :")
 entree = -1
 while entree < 0 or entree > len(liste_problemes):
@@ -107,7 +110,7 @@ elif entree == 1:
     problem = FON(2)
 
 elif entree == 2:
-    problem = inspyred.benchmarks.Kursawe(3) #Trois dimensions 1 objectif ??
+    problem = inspyred.benchmarks.Kursawe()
 
 elif entree == 3:
     problem = inspyred.benchmarks.DTLZ1(dimensions=2, objectives=2)
@@ -132,7 +135,7 @@ elif entree == 9:
     dimension = 3
 
 elif entree == 10:
-    problem = inspyred.benchmarks.Schwefel(dimensions=2)
+    problem = inspyred.benchmarks.Schwefel(2)
 
 
 
@@ -188,12 +191,11 @@ def resolve_problem(param,list_var):
     coords = transform_coord(final_arc)
     hypervol = inspyred.ec.analysis.hypervolume(coords[3], reference_point=None) #Calculation of pareto hypervolume                                                                        #calculated pareto.
     print("\n hypervolume",hypervol,"\n")
-
+    #======================================================================
+    # Plot
+    #======================================================================
     if affichage:
         if dimension == 2:
-            #======================================================================
-            # Plot
-            #======================================================================
             plt.scatter(coords[0], coords[1], color='b')
             plt.show()
 
@@ -214,7 +216,7 @@ def resolve_problem(param,list_var):
             plt.show()
 
 #==============================================================================
-# Functions :
+# Useful Functions :
 #==============================================================================
 
 def transform_coord(final_arc):
@@ -233,12 +235,8 @@ def transform_coord(final_arc):
 
 
 
-
-
-
-
 def euclidian_distance(pointA,pointB):
-    """return the euclidian distance between two point"""
+    #return the euclidian distance between two point
     if len(pointB) != len(pointA):
         print("Erreur : les points ne sont pas dans la même dimension")
     somme = 0
