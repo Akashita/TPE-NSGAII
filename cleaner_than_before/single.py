@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 
-def resolve_single(display, problem, parameters):
+def resolve_single(problem, parameters):
 
     #      In parameters from 0 -> 4
     #           pop_size | nmb_gen | p_crossover | p_mutation

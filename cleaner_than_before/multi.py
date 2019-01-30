@@ -11,7 +11,7 @@ import numpy as np
 import math
 
 
-def resolve_multi(display, problem, parameters):
+def resolve_multi(problem, parameters):
     prng = Random()
     prng.seed(time())
 
@@ -19,7 +19,6 @@ def resolve_multi(display, problem, parameters):
     #           pop_size | nmb_gen | p_crossover | p_mutation
 
     ea = inspyred.ec.emo.NSGA2(prng)
-
     ea.variator = [inspyred.ec.variators.blend_crossover,
                    inspyred.ec.variators.gaussian_mutation]
     ea.terminator = inspyred.ec.terminators.generation_termination
@@ -32,14 +31,33 @@ def resolve_multi(display, problem, parameters):
                           crossover_rate=parameters[2],
                           mutation_rate=parameters[3],
                           max_generations=parameters[1])
-
     final_arc = ea.archive
 
-    print("final_arc")
+    return final_arc
 
 
 
 
+def plot_multi(coords, dimension):
+    if dimension == 2:
+        plt.scatter(coords[0], coords[1], color='b')
+        plt.show()
+
+    elif dimension == 3:
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection='3d')
+
+        x = coords[0]
+        y = coords[1]
+        z = coords[2]
+        ax.scatter(x, y, z, c='r', marker='o')
+
+
+        ax.set_xlabel('Function 1')
+        ax.set_ylabel('Function 2')
+        ax.set_zlabel('Function 3')
+
+        plt.show()
 
 
 
