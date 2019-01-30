@@ -41,7 +41,7 @@ def resolve_single(prng, display, problem):
         graph(best)
 
 
-def graph(best):
+def graph():
     fig = plt.figure()
     ax = fig.gca(projection='3d')
     print(best.candidate[0])
@@ -63,8 +63,15 @@ def graph(best):
 
 
 
+#------------------------------------------------------------
+#     Liste des problèmes
+#------------------------------------------------------------
 
 problem = inspyred.benchmarks.Ackley(dimensions = 2)
 
+
+#------------------------------------------------------------
+#     On appelle les pbs
+#------------------------------------------------------------
 
 resolve_single(None, True, problem)
