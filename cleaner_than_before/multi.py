@@ -38,12 +38,12 @@ def resolve_multi(problem, parameters):
 
 
 
-def plot_multi(coords, dimension):
-    if dimension == 2:
+def plot_multi(coords, objective):
+    if objective == 2:
         plt.scatter(coords[0], coords[1], color='b')
         plt.show()
 
-    elif dimension == 3:
+    elif objective == 3:
         fig = plt.figure()
         ax = fig.add_subplot(111, projection='3d')
 

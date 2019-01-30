@@ -49,13 +49,13 @@ def euclidian_distance(pointA,pointB):
 #------------------------------------------------------------
 #     Initialisation variables (Default var)
 #------------------------------------------------------------
-pop_size = 200
+pop_size = 2000
 nmb_gen = 40
 p_crossover = 0.5
 p_mutation = 0.5
 
 affichage = True
-dimension = 2
+objective = 2
 
 # Choose the range of the variation (By default. Indeed, the variation is specified for each problem (see below))
 list_pop_size = [x for x in range(2,100,10)]
@@ -84,30 +84,41 @@ if problem_type == "0": #Multi-objective
         problem = FON(2)
 
     elif entree == 2:
-        problem = inspyred.benchmarks.Kursawe()
+        problem = inspyred.benchmarks.Kursawe(objectives=2)  #Il marche pas très bien
+
+#------------------------------------------------------------
+#     For DTLZx problems, the number of dimensiosn must be greater than the number of objectives
+
 
     elif entree == 3:
-        problem = inspyred.benchmarks.DTLZ1(dimensions=2, objectives=2)
+        problem = inspyred.benchmarks.DTLZ1(objectives=3, dimensions=3)
+        objective = 3
 
     elif entree == 4:
-        problem = inspyred.benchmarks.DTLZ2()
+        problem = inspyred.benchmarks.DTLZ2(objectives=3, dimensions=3)
+        objective = 3
 
     elif entree == 5:
-        problem = inspyred.benchmarks.DTLZ3()
+        problem = inspyred.benchmarks.DTLZ3(objectives=3, dimensions=3)
+        objective = 3
 
     elif entree == 6:
-        problem = inspyred.benchmarks.DTLZ4()
+        problem = inspyred.benchmarks.DTLZ4(objectives=3, dimensions=3)
+        objective = 3
 
     elif entree == 7:
-        problem = inspyred.benchmarks.DTLZ5()
+        problem = inspyred.benchmarks.DTLZ5(objectives=3, dimensions=3)
+        objective = 3
 
     elif entree == 8:
-        problem = inspyred.benchmarks.DTLZ6()
+        problem = inspyred.benchmarks.DTLZ6(objectives=3, dimensions=3)
+        objective = 3
 
     elif entree == 9:
-        problem = inspyred.benchmarks.DTLZ7(dimensions=3, objectives=3)
-        dimension = 3
+        problem = inspyred.benchmarks.DTLZ7(objectives=3, dimensions=3)
+        objective = 3
 
+#------------------------------------------------------------
 
 elif problem_type == "1": #Single-objective
     liste_problemes = ['Ackley','Griewank','Rosenbrock','Schwefel','Sphere']
@@ -120,8 +131,13 @@ elif problem_type == "1": #Single-objective
         entree = int(input(''))
     if entree == 0:
         problem = inspyred.benchmarks.Ackley()
-        X,Y = np.mgrid[-5:5:0.25, -5:5:0.25]
+        X,Y = np.mgrid[-5:5:0.25, -5:5:0.25] #Definitions's range Ackley function
         Z = (-20) * np.exp((-0.2) * np.sqrt(0.5*((X**2)+(Y**2)))) - np.exp(0.5*(np.cos(2*np.pi*X) + np.cos(2*np.pi*Y))) + np.exp(1) + 20
+
+        #------------------------------------------------------------
+        #     Apparement le single-obj est sensible aux paramètres ce serait bien de définir des range adaptés aux problèmes et de ne plus les bouger
+        #------------------------------------------------------------
+
         list_pop_size = [x for x in range(2,100,10)]
         list_nmb_gen = [x for x in range(1,10000,500)]
         list_p_crossover = [x/10 for x in range(1,11)]
@@ -129,8 +145,8 @@ elif problem_type == "1": #Single-objective
 
     elif entree == 1:
         problem = inspyred.benchmarks.Griewank()
-        X,Y = None
-        Z = None
+        X,Y = np.mgrid[-600:600:10, -600:600:10]
+        Z = 1 + (1/4000)*((X**2)+(Y**2))-(np.cos(X/np.sqrt(1)))*(np.cos(Y/np.sqrt(2)))
         list_pop_size = [x for x in range(2,100,10)]
         list_nmb_gen = [x for x in range(1,10000,500)]
         list_p_crossover = [x/10 for x in range(1,11)]
@@ -138,8 +154,8 @@ elif problem_type == "1": #Single-objective
 
     elif entree == 2:
         problem = inspyred.benchmarks.Rosenbrock()
-        X,Y = None
-        Z = None
+        X,Y = np.mgrid[-10:10:0.1, -10:10:0.1]
+        Z = 100*(Y - X**2)**2 + (1 - X)**2
         list_pop_size = [x for x in range(2,100,10)]
         list_nmb_gen = [x for x in range(1,10000,500)]
         list_p_crossover = [x/10 for x in range(1,11)]
@@ -147,8 +163,8 @@ elif problem_type == "1": #Single-objective
 
     elif entree == 3:
         problem = inspyred.benchmarks.Schwefel()
-        X,Y = None
-        Z = None
+        X,Y = np.mgrid[-512:512:1, -512:512:1]
+        Z = 418.982887*2 + (-X*np.sin(np.sqrt(np.abs(X)))) + (-Y*np.sin(np.sqrt(np.abs(Y))))
         list_pop_size = [x for x in range(2,100,10)]
         list_nmb_gen = [x for x in range(1,10000,500)]
         list_p_crossover = [x/10 for x in range(1,11)]
@@ -156,8 +172,8 @@ elif problem_type == "1": #Single-objective
 
     elif entree == 4:
         problem = inspyred.benchmarks.Sphere()
-        X,Y = None
-        Z = None
+        X,Y = np.mgrid[-10:10:0.1, -10:10:0.1]
+        Z = X**2 + Y**2
         list_pop_size = [x for x in range(2,100,10)]
         list_nmb_gen = [x for x in range(1,10000,500)]
         list_p_crossover = [x/10 for x in range(1,11)]
@@ -204,10 +220,10 @@ for indice in range(len(list_var)):
     print('\nRound ',indice,'\n',param,' = ',list_var[indice])
     if problem_type == "0":
         final_arc = resolve_multi(problem, parameters)
-        coords = transform_coord(final_arc, dimension)
+        coords = transform_coord(final_arc, objective)
         hypervolume = inspyred.ec.analysis.hypervolume(coords[3], reference_point=None)
         if affichage:
-            plot_multi(coords, dimension)
+            plot_multi(coords, objective)
 
     elif problem_type == "1":
         final_pop = resolve_single(problem, parameters)
