@@ -39,23 +39,32 @@ def euclidian_distance(pointA,pointB):
         somme += (pointA[i] - pointB[i])**2
     return math.sqrt(somme)
 
+
+
 #------------------------------------------------------------
 #     Main program beginning
 #------------------------------------------------------------
 
+def resolve_problems(problem_type):
+    if problem_type == "0":
+        final_arc = resolve_multi(problem, parameters)
+        coords = transform_coord(final_arc, objective)
+        hypervolume = inspyred.ec.analysis.hypervolume(coords[3], reference_point=None)
+        if keep_display:
+            plot_multi(coords, objective)
+
+        return hypervolume
+
+    elif problem_type == "1":
+        final_pop = resolve_single(problem, parameters)
+        if keep_display:
+            plot_single(final_pop, X ,Y, Z)
 
 
 
 #------------------------------------------------------------
 #     Initialisation variables (Default var)
 #------------------------------------------------------------
-pop_size = 2000
-nmb_gen = 40
-p_crossover = 0.5
-p_mutation = 0.5
-
-affichage = True
-objective = 2
 
 # Choose the range of the variation (By default. Indeed, the variation is specified for each problem (see below))
 list_pop_size = [x for x in range(2,100,10)]
@@ -63,171 +72,215 @@ list_nmb_gen = [x for x in range(5,100,5)]
 list_p_crossover = [x/10 for x in range(1,11)]
 list_p_mutation = [x/10 for x in range(1,11)]
 
+objective = 2
+go_one = True
+
+
 
 #------------------------------------------------------------
-#     Interaction with the user to choose it's preferences
+#     Global loop
 #------------------------------------------------------------
+while  go_one:
 
-problem_type = input("0 -> Multi-objective | 1 -> Single-objective : ")
-if problem_type == "0": #Multi-objective
-    liste_problemes = ['SCH','FON','kursawe','DTLZ1','DTLZ2','DTLZ3','DTLZ4','DTLZ5','DTLZ6','DTLZ7']
-    print("\n\nWhat problem do you want ? :")
-    entree = -1
-    while entree < 0 or entree > len(liste_problemes):
-        for i in range(len(liste_problemes)):
-            print(' - ',i,' : ',liste_problemes[i])
-        entree = int(input(''))
-    if entree == 0:
-        problem = SCH()
+    #------------------------------------------------------------
+    #     Interaction with the user to choose it's preferences
+    #------------------------------------------------------------
+    print("Step 1 : What type of problem do you want to solve ?")
+    print(" - 0 : Multi-objective")
+    print(" - 1 : Single-objective")
+    problem_type = input("Choice :")
+    if problem_type == "0": #Multi-objective
+        liste_problemes = ['SCH','FON','kursawe','DTLZ1','DTLZ2','DTLZ3','DTLZ4','DTLZ5','DTLZ6','DTLZ7']
+        print("\n\nStep 2 : Which problem do you want ? :")
+        entree = -1
+        while entree < 0 or entree > len(liste_problemes):
+            for i in range(len(liste_problemes)):
+                print(' - ',i,' : ',liste_problemes[i])
+            entree = int(input('Choice : '))
+        if entree == 0:
+            problem = SCH()
 
-    elif entree == 1:
-        problem = FON(2)
+        elif entree == 1:
+            problem = FON(2)
 
-    elif entree == 2:
-        problem = inspyred.benchmarks.Kursawe(objectives=2)  #Il marche pas très bien
+        elif entree == 2:
+            problem = inspyred.benchmarks.Kursawe(objectives=2)  #Il marche pas très bien
 
-#------------------------------------------------------------
-#     For DTLZx problems, the number of dimensiosn must be greater than the number of objectives
+    #------------------------------------------------------------
+    #     For DTLZx problems, the number of dimensiosn must be greater than the number of objectives
 
 
-    elif entree == 3:
-        problem = inspyred.benchmarks.DTLZ1(objectives=3, dimensions=3)
-        objective = 3
+        elif entree == 3:
+            problem = inspyred.benchmarks.DTLZ1(objectives=3, dimensions=3)
+            objective = 3
 
-    elif entree == 4:
-        problem = inspyred.benchmarks.DTLZ2(objectives=3, dimensions=3)
-        objective = 3
+        elif entree == 4:
+            problem = inspyred.benchmarks.DTLZ2(objectives=3, dimensions=3)
+            objective = 3
 
-    elif entree == 5:
-        problem = inspyred.benchmarks.DTLZ3(objectives=3, dimensions=3)
-        objective = 3
+        elif entree == 5:
+            problem = inspyred.benchmarks.DTLZ3(objectives=3, dimensions=3)
+            objective = 3
 
-    elif entree == 6:
-        problem = inspyred.benchmarks.DTLZ4(objectives=3, dimensions=3)
-        objective = 3
+        elif entree == 6:
+            problem = inspyred.benchmarks.DTLZ4(objectives=3, dimensions=3)
+            objective = 3
 
-    elif entree == 7:
-        problem = inspyred.benchmarks.DTLZ5(objectives=3, dimensions=3)
-        objective = 3
+        elif entree == 7:
+            problem = inspyred.benchmarks.DTLZ5(objectives=3, dimensions=3)
+            objective = 3
 
-    elif entree == 8:
-        problem = inspyred.benchmarks.DTLZ6(objectives=3, dimensions=3)
-        objective = 3
+        elif entree == 8:
+            problem = inspyred.benchmarks.DTLZ6(objectives=3, dimensions=3)
+            objective = 3
 
-    elif entree == 9:
-        problem = inspyred.benchmarks.DTLZ7(objectives=3, dimensions=3)
-        objective = 3
+        elif entree == 9:
+            problem = inspyred.benchmarks.DTLZ7(objectives=3, dimensions=3)
+            objective = 3
 
-#------------------------------------------------------------
+    #------------------------------------------------------------
 
-elif problem_type == "1": #Single-objective
-    liste_problemes = ['Ackley','Griewank','Rosenbrock','Schwefel','Sphere']
-    print("\n\nWhat problem do you want ? :")
-    entree = -1
+    elif problem_type == "1": #Single-objective
+        liste_problemes = ['Ackley','Griewank','Rosenbrock','Schwefel','Sphere']
+        print("\n\nStep 2 : Which problem do you want ? :")
+        entree = -1
 
-    while entree < 0 or entree > len(liste_problemes):
-        for i in range(len(liste_problemes)):
-            print(' - ',i,' : ',liste_problemes[i])
-        entree = int(input(''))
-    if entree == 0:
-        problem = inspyred.benchmarks.Ackley()
-        X,Y = np.mgrid[-5:5:0.25, -5:5:0.25] #Definitions's range Ackley function
-        Z = (-20) * np.exp((-0.2) * np.sqrt(0.5*((X**2)+(Y**2)))) - np.exp(0.5*(np.cos(2*np.pi*X) + np.cos(2*np.pi*Y))) + np.exp(1) + 20
+        while entree < 0 or entree > len(liste_problemes):
+            for i in range(len(liste_problemes)):
+                print(' - ',i,' : ',liste_problemes[i])
+            entree = int(input('Choice : '))
+        if entree == 0:
+            problem = inspyred.benchmarks.Ackley()
+            X,Y = np.mgrid[-5:5:0.25, -5:5:0.25] #Definitions's range Ackley function
+            Z = (-20) * np.exp((-0.2) * np.sqrt(0.5*((X**2)+(Y**2)))) - np.exp(0.5*(np.cos(2*np.pi*X) + np.cos(2*np.pi*Y))) + np.exp(1) + 20
 
+            #------------------------------------------------------------
+            #     Apparement le single-obj est sensible aux paramètres ce serait bien de définir des range adaptés aux problèmes et de ne plus les bouger
+            #------------------------------------------------------------
+
+            list_pop_size = [x for x in range(2,100,10)]
+            list_nmb_gen = [x for x in range(1,10000,500)]
+            list_p_crossover = [x/10 for x in range(1,11)]
+            list_p_mutation = [x/10 for x in range(1,11)]
+
+        elif entree == 1:
+            problem = inspyred.benchmarks.Griewank()
+            X,Y = np.mgrid[-600:600:10, -600:600:10]
+            Z = 1 + (1/4000)*((X**2)+(Y**2))-(np.cos(X/np.sqrt(1)))*(np.cos(Y/np.sqrt(2)))
+            list_pop_size = [x for x in range(2,100,10)]
+            list_nmb_gen = [x for x in range(1,10000,500)]
+            list_p_crossover = [x/10 for x in range(1,11)]
+            list_p_mutation = [x/10 for x in range(1,11)]
+
+        elif entree == 2:
+            problem = inspyred.benchmarks.Rosenbrock()
+            X,Y = np.mgrid[-10:10:0.1, -10:10:0.1]
+            Z = 100*(Y - X**2)**2 + (1 - X)**2
+            list_pop_size = [x for x in range(2,100,10)]
+            list_nmb_gen = [x for x in range(1,10000,500)]
+            list_p_crossover = [x/10 for x in range(1,11)]
+            list_p_mutation = [x/10 for x in range(1,11)]
+
+        elif entree == 3:
+            problem = inspyred.benchmarks.Schwefel()
+            X,Y = np.mgrid[-512:512:1, -512:512:1]
+            Z = 418.982887*2 + (-X*np.sin(np.sqrt(np.abs(X)))) + (-Y*np.sin(np.sqrt(np.abs(Y))))
+            list_pop_size = [x for x in range(2,100,10)]
+            list_nmb_gen = [x for x in range(1,10000,500)]
+            list_p_crossover = [x/10 for x in range(1,11)]
+            list_p_mutation = [x/10 for x in range(1,11)]
+
+        elif entree == 4:
+            problem = inspyred.benchmarks.Sphere()
+            X,Y = np.mgrid[-10:10:0.1, -10:10:0.1]
+            Z = X**2 + Y**2
+            list_pop_size = [x for x in range(2,100,10)]
+            list_nmb_gen = [x for x in range(1,10000,500)]
+            list_p_crossover = [x/10 for x in range(1,11)]
+            list_p_mutation = [x/10 for x in range(1,11)]
+
+    #------------------------------------------------------------
+    #     Keep display on ?
+    print("\n\nStep 3 : Display is active, that could be annoying...")
+    keep_display = input("Keep display on ? : (Y/n) ").lower()
+    if keep_display == "" or "y":
+        keep_display = True
+    else:
+        keep_display = False
+    #------------------------------------------------------------
+
+
+    #------------------------------------------------------------
+    #     Keep variation engine ?
+    variation_choix = input("\n\nStep 4 : Do you want to vary a parameter ? (y/N) ").lower()
+    if variation_choix == "":
+        variation_choix = "n"
+    #------------------------------------------------------------
+
+
+    if variation_choix == "y":
         #------------------------------------------------------------
-        #     Apparement le single-obj est sensible aux paramètres ce serait bien de définir des range adaptés aux problèmes et de ne plus les bouger
+        #     Variation of parameters
         #------------------------------------------------------------
 
-        list_pop_size = [x for x in range(2,100,10)]
-        list_nmb_gen = [x for x in range(1,10000,500)]
-        list_p_crossover = [x/10 for x in range(1,11)]
-        list_p_mutation = [x/10 for x in range(1,11)]
+        list_param = ['pop_size','nmb_gen','p_crossover','p_mutation']
+        no_name = [list_pop_size , list_nmb_gen , list_p_crossover , list_p_mutation]
 
-    elif entree == 1:
-        problem = inspyred.benchmarks.Griewank()
-        X,Y = np.mgrid[-600:600:10, -600:600:10]
-        Z = 1 + (1/4000)*((X**2)+(Y**2))-(np.cos(X/np.sqrt(1)))*(np.cos(Y/np.sqrt(2)))
-        list_pop_size = [x for x in range(2,100,10)]
-        list_nmb_gen = [x for x in range(1,10000,500)]
-        list_p_crossover = [x/10 for x in range(1,11)]
-        list_p_mutation = [x/10 for x in range(1,11)]
+        print("\n\nStep 5 : Which parameter do you want to vary :")
+        for i in range(len(list_param)):
+            print(' - ',i,' : ',list_param[i])
+        entree = int(input('Choice : '))
 
-    elif entree == 2:
-        problem = inspyred.benchmarks.Rosenbrock()
-        X,Y = np.mgrid[-10:10:0.1, -10:10:0.1]
-        Z = 100*(Y - X**2)**2 + (1 - X)**2
-        list_pop_size = [x for x in range(2,100,10)]
-        list_nmb_gen = [x for x in range(1,10000,500)]
-        list_p_crossover = [x/10 for x in range(1,11)]
-        list_p_mutation = [x/10 for x in range(1,11)]
+        param_variation = list_param[entree]
+        list_var = no_name[entree][:]
 
-    elif entree == 3:
-        problem = inspyred.benchmarks.Schwefel()
-        X,Y = np.mgrid[-512:512:1, -512:512:1]
-        Z = 418.982887*2 + (-X*np.sin(np.sqrt(np.abs(X)))) + (-Y*np.sin(np.sqrt(np.abs(Y))))
-        list_pop_size = [x for x in range(2,100,10)]
-        list_nmb_gen = [x for x in range(1,10000,500)]
-        list_p_crossover = [x/10 for x in range(1,11)]
-        list_p_mutation = [x/10 for x in range(1,11)]
-
-    elif entree == 4:
-        problem = inspyred.benchmarks.Sphere()
-        X,Y = np.mgrid[-10:10:0.1, -10:10:0.1]
-        Z = X**2 + Y**2
-        list_pop_size = [x for x in range(2,100,10)]
-        list_nmb_gen = [x for x in range(1,10000,500)]
-        list_p_crossover = [x/10 for x in range(1,11)]
-        list_p_mutation = [x/10 for x in range(1,11)]
-
-#------------------------------------------------------------
-#     Keep display on ?
-#------------------------------------------------------------
-
-if affichage:
-    print("\n\nDisplay is active, that could be annoying...")
-    affichage = 'o' == input("Keep display on ? : O/n\n").lower()
+        print('\n\nStep 6 : Enter values for remaining parameters')
+        if param_variation != 'pop_size':
+            pop_size = int(input(" - Population size : "))
+        if param_variation != 'nmb_gen':
+            nmb_gen = int(input(" - Generation : "))
+        if param_variation != 'p_crossover':
+            p_crossover = float(input(" - Crossover probabilty : "))
+        if param_variation != 'p_mutation':
+            p_mutation = float(input(" - Mutation probabilty : "))
 
 
-#------------------------------------------------------------
-#     Variation of parameters
-#------------------------------------------------------------
+        for indice in range(len(list_var)):
 
-list_param = ['pop_size','nmb_gen','p_crossover','p_mutation']
-no_name = [list_pop_size , list_nmb_gen , list_p_crossover , list_p_mutation]
+            if param_variation == 'pop_size':
+                pop_size = list_var[indice]
+            elif param_variation == 'nmb_gen':
+                nmb_gen = list_var[indice]
+            elif param_variation == 'p_crossover':
+                p_crossover = list_var[indice]
+            elif param_variation == 'p_mutation':
+                p_mutation = list_var[indice]
 
-print("\n\nQuel parametre voulez vous faire varier :")
-for i in range(len(list_param)):
-    print(' - ',i,' : ',list_param[i])
-entree = int(input(''))
+            print('\nRound ',indice,'\n',param_variation,' = ',list_var[indice])
 
-param = list_param[entree]
-list_var = no_name[entree][:]
+            parameters =[pop_size,  nmb_gen,  p_crossover,  p_mutation]
+            resolve_problems(problem_type)
 
 
-for indice in range(len(list_var)):
+    else:
+        #------------------------------------------------------------
+        #     Define some values for problem parameters
+        #------------------------------------------------------------
 
-    if param == 'pop_size':
-        pop_size = list_var[indice]
-    elif param == 'nmb_gen':
-        nmb_gen = list_var[indice]
-    elif param == 'p_crossover':
-        p_crossover = list_var[indice]
-    elif param == 'p_mutation':
-        p_mutation = list_var[indice]
+        print('\n\nStep 5 : Enter values for all parameters :')
+        pop_size = int(input(" - Population size : "))
+        nmb_gen = int(input(" - Generation : "))
+        p_crossover = float(input(" - Crossover probabilty : "))
+        p_mutation = float(input(" - Mutation probabilty : "))
 
-    parameters =[pop_size,  nmb_gen,  p_crossover,  p_mutation]
+        parameters =[pop_size,  nmb_gen,  p_crossover,  p_mutation]
+        resolve_problems(problem_type)
 
-    print('\nRound ',indice,'\n',param,' = ',list_var[indice])
-    if problem_type == "0":
-        final_arc = resolve_multi(problem, parameters)
-        coords = transform_coord(final_arc, objective)
-        hypervolume = inspyred.ec.analysis.hypervolume(coords[3], reference_point=None)
-        if affichage:
-            plot_multi(coords, objective)
-
-    elif problem_type == "1":
-        final_pop = resolve_single(problem, parameters)
-        if affichage:
-            plot_single(final_pop, X ,Y, Z)
+    go_one = input("\n\nThe program ended properly, do you want to start it again ? (Y/n) : ").lower()
+    print("\n"*10)
+    if go_one == "" or go_one == "y":
+        go_one = True
+    else:
+        go_one = False
 
 print("\n\n\t -- Done --\n\n")
