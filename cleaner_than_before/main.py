@@ -1,6 +1,8 @@
 from single import *
 from multi import *
+
 import numpy as np
+import time
 
 import inspyred
 from inspyred import ec
@@ -46,8 +48,11 @@ def euclidian_distance(pointA,pointB):
 #------------------------------------------------------------
 
 def resolve_problems(problem_type):
+    time_start = time.time()
     if problem_type == "0":
         final_arc = resolve_multi(problem, parameters)
+        time_end = time.time() - time_start
+        print("\n --- Executing time : ", time_end, "--- \n")
         coords = transform_coord(final_arc, objective)
         hypervolume = inspyred.ec.analysis.hypervolume(coords[3], reference_point=None)
         if keep_display:
@@ -57,6 +62,8 @@ def resolve_problems(problem_type):
 
     elif problem_type == "1":
         final_pop = resolve_single(problem, parameters)
+        time_end = time.time() - time_start
+        print("\n --- Executing time : ", time_end, "--- \n")
         if keep_display:
             plot_single(final_pop, X ,Y, Z)
 
