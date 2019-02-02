@@ -253,7 +253,6 @@ while  go_one:
 
 
         for indice in range(len(list_var)):
-
             if param_variation == 'pop_size':
                 pop_size = list_var[indice]
             elif param_variation == 'nmb_gen':
