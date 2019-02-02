@@ -251,7 +251,6 @@ while  go_one:
         if param_variation != 'p_mutation':
             p_mutation = float(input(" - Mutation probabilty : "))
 
-
         for indice in range(len(list_var)):
             if param_variation == 'pop_size':
                 pop_size = list_var[indice]
