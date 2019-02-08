@@ -13,6 +13,56 @@ from tkinter import *
 #------------------------------------------------------------
 #     Functions
 #------------------------------------------------------------
+def input_int(ch , intervalle):
+    intervalle_exist = ( len(intervalle) != 0 )
+    valide = False
+    while not valide:
+        entree = input(ch)
+        try:
+            entree = int(entree)
+            if intervalle_exist:
+                if entree >= intervalle[0] and entree <= intervalle[1]:
+                    valide = True
+                else:
+                    print("We only take integers between ",intervalle[0]," and ",intervalle[1],", sorry")
+            else:
+                valide = True
+        except:
+            print("We only take integers",end = '')
+            if intervalle_exist:
+                print(" between ",intervalle[0]," and ",intervalle[1],", sorry",end ='')
+            print('')
+    return entree
+
+def input_float(ch , intervalle):
+    intervalle_exist = (len(intervalle) != 0)
+    valide = False
+    while not valide:
+        entree = input(ch)
+        try:
+            entree = float(entree)
+            if intervalle_exist:
+                if entree >= intervalle[0] and entree <= intervalle[1]:
+                    valide = True
+                else:
+                    print("We only take floats between ",intervalle[0]," and ",intervalle[1],", sorry")
+            else:
+                valide = True
+        except:
+            print("We only take floats",end = '')
+            if intervalle_exist:
+                print(" between ",intervalle[0]," and ",intervalle[1],", sorry",end ='')
+            print('')
+    return entree
+
+def question(demande,default):
+    entree = 'a'#To do the loop at least once
+    while not entree.lower() in ['','y','n']:
+        entree = input(demande)
+    if entree == '':
+        return default
+    return entree.lower() == 'y'
+
 
 def transform_coord(final_arc, nb_objective):
     #------------------------------------------------------------
@@ -95,15 +145,19 @@ while  go_one:
     print("Step 1 : What type of problem do you want to solve ?")
     print(" - 0 : Multi-objective")
     print(" - 1 : Single-objective")
-    problem_type = input("Choice :")
+
+    problem_type = ''
+    while not problem_type in ['0','1']:
+        problem_type = input("Choice : ")
+
     if problem_type == "0": #Multi-objective
         liste_problemes = ['SCH','FON','kursawe','DTLZ1','DTLZ2','DTLZ3','DTLZ4','DTLZ5','DTLZ6','DTLZ7']
         print("\n\nStep 2 : Which problem do you want ? :")
-        entree = -1
-        while entree < 0 or entree > len(liste_problemes):
-            for i in range(len(liste_problemes)):
-                print(' - ',i,' : ',liste_problemes[i])
-            entree = int(input('Choice : '))
+
+        for i in range(len(liste_problemes)):
+            print(' - ',i,' : ',liste_problemes[i])
+        entree = input_int('Choice : ', [0, len(liste_problemes)-1] )
+
         if entree == 0:
             problem = SCH()
 
@@ -150,12 +204,11 @@ while  go_one:
     elif problem_type == "1": #Single-objective
         liste_problemes = ['Ackley','Griewank','Rosenbrock','Schwefel','Sphere']
         print("\n\nStep 2 : Which problem do you want ? :")
-        entree = -1
 
-        while entree < 0 or entree > len(liste_problemes):
-            for i in range(len(liste_problemes)):
-                print(' - ',i,' : ',liste_problemes[i])
-            entree = int(input('Choice : '))
+        for i in range(len(liste_problemes)):
+            print(' - ',i,' : ',liste_problemes[i])
+        entree = input_int('Choice : ', [0, len(liste_problemes)-1])
+
         if entree == 0:
             problem = inspyred.benchmarks.Ackley()
             X,Y = np.mgrid[-5:5:0.25, -5:5:0.25] #Definitions's range Ackley function
@@ -209,23 +262,18 @@ while  go_one:
     #------------------------------------------------------------
     #     Keep display on ?
     print("\n\nStep 3 : Display is active, that could be annoying...")
-    keep_display = input("Keep display on ? : (Y/n) ").lower()
-    if keep_display == "" or "y":
-        keep_display = True
-    else:
-        keep_display = False
+    keep_display = question("Keep display on ? : (Y/n) ",True)
+
     #------------------------------------------------------------
 
 
     #------------------------------------------------------------
     #     Keep variation engine ?
-    variation_choix = input("\n\nStep 4 : Do you want to vary a parameter ? (y/N) ").lower()
-    if variation_choix == "":
-        variation_choix = "n"
+    variation_choix = question("\n\nStep 4 : Do you want to vary a parameter ? (y/N) ",False)
     #------------------------------------------------------------
 
 
-    if variation_choix == "y":
+    if variation_choix:
         #------------------------------------------------------------
         #     Variation of parameters
         #------------------------------------------------------------
@@ -236,20 +284,20 @@ while  go_one:
         print("\n\nStep 5 : Which parameter do you want to vary :")
         for i in range(len(list_param)):
             print(' - ',i,' : ',list_param[i])
-        entree = int(input('Choice : '))
+        entree = input_int('Choice : ',[0,len(list_param)-1])
 
         param_variation = list_param[entree]
         list_var = no_name[entree][:]
 
         print('\n\nStep 6 : Enter values for remaining parameters')
         if param_variation != 'pop_size':
-            pop_size = int(input(" - Population size : "))
+            pop_size = input_int(" - Population size : ",[])
         if param_variation != 'nmb_gen':
-            nmb_gen = int(input(" - Generation : "))
+            nmb_gen = input_int(" - Generation : ",[])
         if param_variation != 'p_crossover':
-            p_crossover = float(input(" - Crossover probabilty : "))
+            p_crossover = input_float(" - Crossover probabilty : ",[])
         if param_variation != 'p_mutation':
-            p_mutation = float(input(" - Mutation probabilty : "))
+            p_mutation = input_float(" - Mutation probabilty : ",[])
 
         for indice in range(len(list_var)):
             if param_variation == 'pop_size':
@@ -263,7 +311,7 @@ while  go_one:
 
             print('\nRound ',indice,'\n',param_variation,' = ',list_var[indice])
 
-            parameters =[pop_size,  nmb_gen,  p_crossover,  p_mutation]
+            parameters = [pop_size,  nmb_gen,  p_crossover,  p_mutation]
             resolve_problems(problem_type)
 
 
@@ -273,19 +321,15 @@ while  go_one:
         #------------------------------------------------------------
 
         print('\n\nStep 5 : Enter values for all parameters :')
-        pop_size = int(input(" - Population size : "))
-        nmb_gen = int(input(" - Generation : "))
-        p_crossover = float(input(" - Crossover probabilty : "))
-        p_mutation = float(input(" - Mutation probabilty : "))
+        pop_size = input_int(" - Population size : ",[])
+        nmb_gen = input_int(" - Generation : ",[])
+        p_crossover = input_float(" - Crossover probabilty : ",[])
+        p_mutation =input_float(" - Mutation probabilty : ",[])
 
         parameters =[pop_size,  nmb_gen,  p_crossover,  p_mutation]
         resolve_problems(problem_type)
 
-    go_one = input("\n\nThe program ended properly, do you want to start it again ? (Y/n) : ").lower()
+    go_one = question("\n\nThe program ended properly, do you want to start it again ? (Y/n) : ",True)
     print("\n"*10)
-    if go_one == "" or go_one == "y":
-        go_one = True
-    else:
-        go_one = False
 
 print("\n\n\t -- Done --\n\n")
