@@ -312,7 +312,8 @@ while  go_one:
             print('\nRound ',indice,'\n',param_variation,' = ',list_var[indice])
 
             parameters = [pop_size,  nmb_gen,  p_crossover,  p_mutation]
-            resolve_problems(problem_type)
+            print("Hypervolume :",resolve_problems(problem_type))
+
 
 
     else:
@@ -327,7 +328,7 @@ while  go_one:
         p_mutation =input_float(" - Mutation probabilty : ",[])
 
         parameters =[pop_size,  nmb_gen,  p_crossover,  p_mutation]
-        resolve_problems(problem_type)
+        print("Hypervolume :",resolve_problems(problem_type))
 
     go_one = question("\n\nThe program ended properly, do you want to start it again ? (Y/n) : ",True)
     print("\n"*10)
