@@ -13,11 +13,15 @@ from tkinter import *
 #------------------------------------------------------------
 #     Functions
 #------------------------------------------------------------
-def input_int(ch , intervalle):
+def input_int(ch , intervalle=[]):
     intervalle_exist = ( len(intervalle) != 0 )
     valide = False
     while not valide:
         entree = input(ch)
+        if entree == '':
+            print("You choose the default value")
+            return 'default'
+
         try:
             entree = int(entree)
             if intervalle_exist:
@@ -34,11 +38,15 @@ def input_int(ch , intervalle):
             print('')
     return entree
 
-def input_float(ch , intervalle):
+def input_float(ch , intervalle=[]):
     intervalle_exist = (len(intervalle) != 0)
     valide = False
     while not valide:
         entree = input(ch)
+        if entree == '':
+            print("You choose the default value")
+            return 'default'
+
         try:
             entree = float(entree)
             if intervalle_exist:
@@ -207,7 +215,7 @@ while  go_one:
 
         for i in range(len(liste_problemes)):
             print(' - ',i,' : ',liste_problemes[i])
-        entree = input_int('Choice : ', [0, len(liste_problemes)-1])
+        entree = input_int('Choice : ', intervalle = [0, len(liste_problemes)-1])
 
         if entree == 0:
             problem = inspyred.benchmarks.Ackley()
@@ -222,6 +230,10 @@ while  go_one:
             list_nmb_gen = [x for x in range(1,10000,500)]
             list_p_crossover = [x/10 for x in range(1,11)]
             list_p_mutation = [x/10 for x in range(1,11)]
+
+            # TODO: En mettre un dans chaque probleme,
+            #pop_size , nmb_gen , p_crossover , p_mutation
+            default_parameters = [200, 10, 0.5, 0.5]
 
         elif entree == 1:
             problem = inspyred.benchmarks.Griewank()
@@ -291,13 +303,13 @@ while  go_one:
 
         print('\n\nStep 6 : Enter values for remaining parameters')
         if param_variation != 'pop_size':
-            pop_size = input_int(" - Population size : ",[])
+            pop_size = input_int(" - Population size : ")
         if param_variation != 'nmb_gen':
-            nmb_gen = input_int(" - Generation : ",[])
+            nmb_gen = input_int(" - Generation : ")
         if param_variation != 'p_crossover':
-            p_crossover = input_float(" - Crossover probabilty : ",[])
+            p_crossover = input_float(" - Crossover probabilty : ")
         if param_variation != 'p_mutation':
-            p_mutation = input_float(" - Mutation probabilty : ",[])
+            p_mutation = input_float(" - Mutation probabilty : ")
 
         for indice in range(len(list_var)):
             if param_variation == 'pop_size':
@@ -311,7 +323,13 @@ while  go_one:
 
             print('\nRound ',indice,'\n',param_variation,' = ',list_var[indice])
 
-            parameters = [pop_size,  nmb_gen,  p_crossover,  p_mutation]
+            parameters = []
+            for i, param in enumerate([pop_size, nmb_gen, p_crossover, p_mutation]):
+                if param == "default":
+                    parameters.append(default_parameters[i])
+                else:
+                    parameters.append(param)
+
             print("Hypervolume :",resolve_problems(problem_type))
 
 
@@ -327,7 +345,13 @@ while  go_one:
         p_crossover = input_float(" - Crossover probabilty : ",[])
         p_mutation =input_float(" - Mutation probabilty : ",[])
 
-        parameters =[pop_size,  nmb_gen,  p_crossover,  p_mutation]
+        parameters = []
+        for i, param in enumerate([pop_size, nmb_gen, p_crossover, p_mutation]):
+            if param == "default":
+                parameters.append(default_parameters[i])
+            else:
+                parameters.append(param)
+
         print("Hypervolume :",resolve_problems(problem_type))
 
     go_one = question("\n\nThe program ended properly, do you want to start it again ? (Y/n) : ",True)

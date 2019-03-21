@@ -49,12 +49,22 @@ from functools import reduce
 
 CR Réunion 18 février:
   - On remplace la variation des paramètre en fonction du temps par la variation en fonction de nmb de génération
+  
   - On fixe des paramètres de ref (P_mut ... /génération) adaptés à chaque pb .. (On voulait déjà le faire)
+    Il ne reste plus qu'à trouver les valeurs, le systeme est déjà là
+    
   - Faire des test avec des fonction encore plus complexes (A voir)
+  
   - Trouver de la biblio sur les pb DTLZx (Science direct) (Chercher DTLZ dans le site)
+  
   - Multi-obj : tracer l'évolution du front de pareto (Pas trop de fronts -> reste lisible)
+  
   - Sur quel critère l'algo se stop t il ? (Variation minime de l'hypervolume ?)
+  
   - Faire varier le type de croisement
+  
   - Faire des figures travaillées
+  
   - Faire des tests avec NSGAIII, il apporte quoi ?
+  
   - yarpit.com (A voir)
