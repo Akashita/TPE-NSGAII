@@ -8,8 +8,6 @@ import inspyred
 from inspyred import ec
 from inspyred.benchmarks import Benchmark
 
-from tkinter import *
-
 #------------------------------------------------------------
 #     Functions
 #------------------------------------------------------------
@@ -340,10 +338,10 @@ while  go_one:
         #------------------------------------------------------------
 
         print('\n\nStep 5 : Enter values for all parameters :')
-        pop_size = input_int(" - Population size : ",[])
-        nmb_gen = input_int(" - Generation : ",[])
-        p_crossover = input_float(" - Crossover probabilty : ",[])
-        p_mutation =input_float(" - Mutation probabilty : ",[])
+        pop_size = input_int(" - Population size : ")
+        nmb_gen = input_int(" - Generation : ")
+        p_crossover = input_float(" - Crossover probabilty : ")
+        p_mutation =input_float(" - Mutation probabilty : ")
 
         parameters = []
         for i, param in enumerate([pop_size, nmb_gen, p_crossover, p_mutation]):
