@@ -70,10 +70,10 @@ CR Réunion 18 février:
   - yarpit.com (A voir)
 
 TODO 21/03:
- - multi auto et single auto, faire des graphes (résultat en fonction du nombre de générationation)
+ - multi auto et single auto, faire des graphes (résultat en fonction du nombre de génération)
 
  - les % pour atteinte d'objectif
 
  - on met le temps parceque c'est ce que les gens recherchent dans la vrai vie
 
- - est ce que ce putan dalgo s'arrete quand ça bouge plus (on pourrait le voir avec le temps)
+ - est ce que cet algo s'arrete quand ça bouge plus (on pourrait le voir avec le temps)
