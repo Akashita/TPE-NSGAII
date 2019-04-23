@@ -40,9 +40,9 @@ parameters = [1000, 40, 0.5, 0.5]
 liste_soluces = []
 
 #On fait varier crossover
-for cross in [0.0 , 1.0]:
-    parameters[2] = cross
-    print('crossover : ', parameters[2] ,'\n\n')
+for mut in range(0,110, 10):
+    parameters[3] = mut / 100
+    print('mutation_rate : ', parameters[3] ,'\n\n')
     minimum = [] #Liste des meilleures solutions
     pas = 10
     max = 1000
@@ -59,7 +59,7 @@ for cross in [0.0 , 1.0]:
 print('Done')
 
 D = time.localtime()
-name = str(D[0]) + str_nb(D[1]) + str_nb(D[2]) + str_nb(D[3]) + str_nb(D[4]) + ".csv"
+name = 'mut_' + str_nb(D[1]) + str_nb(D[2]) + str_nb(D[3]) + str_nb(D[4]) + ".csv"
 f = open(name, "w")
 ch = ''
 for i in liste_soluces[:]:
