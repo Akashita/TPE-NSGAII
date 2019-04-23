@@ -35,8 +35,9 @@ def plot_single(final_pop, X, Y, Z):
     #-----------------------------------------------------------
     fig = plt.figure()
     ax = fig.gca(projection='3d')
-    ax.scatter([X.candidate[0] for X in final_pop], [Y.candidate[1] for Y in final_pop], [Z.fitness for Z in final_pop], c="r", marker="o")
-
+    yolo = max(final_pop)
+    #ax.scatter([X.candidate[0] for X in final_pop], [Y.candidate[1] for Y in final_pop], [Z.fitness for Z in final_pop], c="r", marker="o")
+    ax.scatter(yolo.candidate[0], yolo.candidate[1], yolo.fitness, c="r", marker="o")
     #------------------------------------------------------------
     #     The representation of the function
     #------------------------------------------------------------

@@ -40,7 +40,9 @@ def resolve_multi(problem, parameters):
 
 def plot_multi(coords, objective):
     if objective == 2:
-        plt.scatter(coords[0], coords[1], color='b')
+        plt.xlabel('Function 1')
+        plt.ylabel('Function 2')
+        plt.scatter(coords[0], coords[1], color='r')
         plt.show()
 
     elif objective == 3:

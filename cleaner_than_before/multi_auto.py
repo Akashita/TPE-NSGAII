@@ -1,5 +1,5 @@
 from multi import *
-
+import matplotlib.pyplot as plt
 import numpy as np
 import time
 
@@ -51,12 +51,12 @@ def plot_multi(coords, objective):
 #------------------------------------------------------------
 
 pas = 1
-gen_range = 10
+gen_range = 50
 
 problem = inspyred.benchmarks.DTLZ1(objectives=3, dimensions=3)
 objective = 3
-
-parameters = [1000, 10, 0.5, 0.5]
+#pop, gen, cross, mut
+parameters = [20, 0, 0.1, 0.1]
 
 problem_return = []
 
@@ -70,5 +70,6 @@ for turn in range(1,gen_range+1,pas):
 
     problem_return.append([hypervolume, coords])
 
-for i in problem_return:
-    plot_multi(i[1],3)
+
+plt.plot([Z[0] for Z in problem_return])
+plt.show()
