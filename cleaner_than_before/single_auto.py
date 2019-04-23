@@ -35,13 +35,14 @@ def affiche(liste):
         print(elem)
 
 #pop_size, nmbgen , crossover , mutation_rate
+#parameters = [1000, 40, 0.5, 0.5]
 parameters = [1000, 40, 0.5, 0.5]
 liste_soluces = []
 
 #On fait varier crossover
-for cross in range(0, 100, 10):
-    parameters[2] = cross / 100
-    print('crossover : ', cross,'\n\n')
+for cross in [0.0 , 1.0]:
+    parameters[2] = cross
+    print('crossover : ', parameters[2] ,'\n\n')
     minimum = [] #Liste des meilleures solutions
     pas = 10
     max = 1000
@@ -54,14 +55,14 @@ for cross in range(0, 100, 10):
         print('nmb_gen : ',param)
 
     print('\n\n')
-    liste_soluces.append(minimum)
+    liste_soluces.append(minimum[:])
 print('Done')
 
 D = time.localtime()
 name = str(D[0]) + str_nb(D[1]) + str_nb(D[2]) + str_nb(D[3]) + str_nb(D[4]) + ".csv"
 f = open(name, "w")
 ch = ''
-for i in liste_soluces:
+for i in liste_soluces[:]:
     for j in i:
         ch += str(j) + ','
     ch = ch[:-1] + '\n'
