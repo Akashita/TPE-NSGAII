@@ -77,3 +77,11 @@ TODO 21/03:
  - on met le temps parceque c'est ce que les gens recherchent dans la vrai vie
 
  - est ce que cet algo s'arrete quand ça bouge plus (on pourrait le voir avec le temps)
+
+11/04 :
+
+-probleme hypervolume : l'intervalle des points influe beaucoup. Si on a un point qui est vachement plus loin, l'hypervolume, même si le point est sur la même courbe, sera bien plus grand. Voir les intervalles conseillés sur wikipedia.
+
+-stocker les résultats plutot que des courbes, pour pouvoir ajuster les images sans refaire tous les calculs. Regarder le fonctionnement des fichiers .csv.
+
+- single objective : Ackley ; multi : DTLZ-7 et SCH
