@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 
-file = 'Ackley_pop_size_240022.csv'
+file = 'Ackley_p_mutation_240136.csv'
 
 
 f = open(file,'r')

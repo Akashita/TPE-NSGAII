@@ -46,6 +46,7 @@ def var_nmb_gen(parameters,min_g,max_g,pas_g):
         final_pop = resolve_single(problem, parameters)
         liste = [Z.fitness for Z in final_pop]
         minimum.append( round( min(liste) , 4))
+        affiche('temps total : ' + str(int((time.time() - first_start) // 60)) + ' minutes',(0,140))
     return minimum[:]
 
 #On choisit le probleme pour lequel on va faire les tests :
@@ -76,7 +77,7 @@ back = (0,0,0)
 fenetre = pygame.display.set_mode((450,450))
 
 def affiche(ch,pos):
-    ch += '   '
+    ch = '  '+ ch + '   '
     message = police.render(ch, True, couleur, back)
     fenetre.blit(message, pos)
     pygame.display.flip()
@@ -87,10 +88,12 @@ def affiche(ch,pos):
 
 #On stocke dans exec times les temps d'exécution des différents problemes
 exec_times = []
+first_start = time.time()
 affiche(name_problem,(0,0))
+
 #On fait varier chaque parametre les un à la suite des autres :
 for p in parametres:
-    affiche('-- Variation de '+p['name']+" --",(0,20))
+    affiche('Variation de '+p['name'],(0,20))
     #On stocke la date (pour les fichiers)
     date = time.localtime()
 
@@ -154,6 +157,7 @@ for p in parametres:
     f = open(name, 'w')
     f.write(ch)
     f.close()
+    affiche(name + ' saved',(0,120))
     print('---------------- CSV file saved ----------------\n\n')
 
 
