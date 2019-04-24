@@ -48,7 +48,7 @@ def var_nmb_gen(parameters,min_g,max_g,pas_g):
 
 #On choisit le probleme pour lequel on va faire les tests :
 problem = inspyred.benchmarks.Ackley()
-name_problem = 'test' #(seulement pour le nom des fichiers)
+name_problem = 'Ackley' #(seulement pour le nom des fichiers)
 
 #On défini les paramètres par défaut :
 # pop_size, nmb_gen, p_crossover, p_mutation
@@ -57,14 +57,14 @@ default_parameters = [1000, 40, 0.5, 0.5]
 #On définie les caractéristiques des paramètres que l'on va faire varier :
 #indice : l'indice dans la liste parameters qu'il faut passer dans resolve_problem()
 #proba : si le parametre est une probabilitée ou pas (on la rentre alors en %)
-parametres = [{'name' : 'pop_size' , 'indice' : 0 , 'min' : 10 , 'max' : 100 , 'pas' : 10 , 'proba' : False},
+parametres = [{'name' : 'pop_size' , 'indice' : 0 , 'min' : 10 , 'max' : 10000 , 'pas' : 100 , 'proba' : False},
 {'name' : 'p_crossover' , 'indice' : 2 , 'min' : 0 , 'max' : 100 , 'pas' : 10 , 'proba' : True},
 {'name' : 'p_mutation' , 'indice' : 3 , 'min' : 0 , 'max' : 100 , 'pas' : 10 , 'proba' : True}
 ]
 
 #La façon dont le nombre de génération évolue :
 min_gen = 0
-max_gen = 100
+max_gen = 10000
 pas_gen = 10
 
 #On stocke dans exec times les temps d'exécution des différents problemes
@@ -98,14 +98,16 @@ for p in parametres:
 
         #On récupère la liste des solutions optimales de chaque résolution en faisant varier
         #le nombre de génération à chaque fois :
+        time_begin = time.time()
         liste_soluces.append(var_nmb_gen(parameters, min_gen, max_gen, pas_gen))
+        t = time.time() - time_begin
 
-        print('\n'+('-'*20)+'\n')
+        print('\nTemps intermédiaire :',round(t,3),'secondes \n')
 
     #On arrete le chronomètre :
     time_exec = time.time() - start_time
     exec_times.append(time_exec)
-    print(p['name'],' done in ',time_exec,' secondes.\n',sep='')
+    print(p['name'],' done in ',round(time_exec,3),' secondes.\n',sep='')
 
 
     # Enregistrement du fichier csv :
@@ -116,7 +118,7 @@ for p in parametres:
     #On écrit l'entête du fichier (date, temps d'exécutions, paramètres) :
     str_date = str(date[0]) +'/'+ str_nb(date[1]) +'/'+ str_nb(date[2]) +' '+ str_nb(date[3]) +':'+ str_nb(date[4]) +':'+ str_nb(date[5])
     entete = 'Head Début : ' + str_date
-    entete += " , Temps d'exécution : " + str(time_exec) + "secondes"
+    entete += " , Temps d'exécution : " + str(int(time_exec)) + " secondes"
     entete += ' , Variation de ' + p['name'] + ' entre ' + str(p['min']) + ' et ' + str(p['max'])
     if p['proba']:
         entete += ' (en %)'
@@ -137,4 +139,4 @@ for p in parametres:
     print('---------------- CSV file saved ----------------\n\n')
 
 
-print("--- Done in",sum(exec_times),'secondes ---')
+print("--- Done in",int(sum(exec_times)),'secondes ---')
