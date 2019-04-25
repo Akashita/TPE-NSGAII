@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 
-file = 'Ackley_p_mutation_240136.csv'
+file = 'Ackley_pop_size_250831.csv'
 
 
 f = open(file,'r')
@@ -13,9 +13,10 @@ if lignes[0][:4] == 'Head':
     lignes = lignes[1:]
 
 pas_courbes = 3
-pas_values = 10
+pas_values = 1
+min_courbes = 0
 
-for i in range(0,len(lignes),pas_courbes):
+for i in range(min_courbes,len(lignes),pas_courbes):
 
     ligne = lignes[i][:-1]
     ligne = ligne.split(',')
@@ -26,4 +27,5 @@ for i in range(0,len(lignes),pas_courbes):
         liste.append(ligne[j])
     plt.plot(liste)
 
+plt.legend(range(min_courbes,len(lignes),pas_courbes))
 plt.show()
