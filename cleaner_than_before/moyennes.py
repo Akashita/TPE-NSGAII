@@ -59,12 +59,14 @@ def moyenne_fichier(schema):
 
     return new_liste
 
+
 def lissage_liste(L , pas = 2):
     new_liste = []
     for i in range(0, len(L), pas):
         tmp = []
         for j in range(pas):
-            tmp.append(L[i + j])
+            if i+j < len(L):
+                tmp.append(L[i + j])
         new_liste.append(moyenne(tmp))
     return new_liste
 
@@ -82,15 +84,14 @@ def graph_tableau(tab,pas_courbes =1, min_courbes=0,pas_values=1):
     plt.legend(range(min_courbes,len(tab),pas_courbes))
     plt.show()
 
-'Ackley_p_crossover_251532.csv'
 
 #graph_tableau(moyenne_fichier('Ackley_p_mut*.csv'),pas_courbes = 3,min_courbes = 0,pas_values = 10)
 
-#graph_tableau(lissage_tab(liste_from_csv('Ackley_p_crossover_251532.csv'),step=5),pas_values = 1)
+#graph_tableau(lissage_tab(liste_from_csv('Ackley_p_crossover_251532.csv'),step=100),pas_values = 1)
 
-graph_tableau(lissage_tab(moyenne_fichier('Ackley_p_cross*.csv'),step=100),pas_values = 1)
+#graph_tableau(lissage_tab(moyenne_fichier('SCH*pop*.csv'),step=1),pas_values = 1)
 
-
+graph_tableau(lissage_tab(liste_from_csv('SCH_pop_size_292309.csv'),step=5))
 
 
 # Fin du fichier

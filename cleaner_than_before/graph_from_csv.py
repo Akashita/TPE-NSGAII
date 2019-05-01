@@ -27,4 +27,4 @@ def graph_from_csv(file):
     plt.legend(range(min_courbes,len(lignes),pas_courbes))
     plt.show()
 
-graph_from_csv('Ackley_p_crossover_251532.csv')
+graph_from_csv('SCH_pop_size_292309.csv')

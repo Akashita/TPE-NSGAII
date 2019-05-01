@@ -153,13 +153,13 @@ while True:
 
         #On écrit l'entête du fichier (date, temps d'exécutions, paramètres) :
         str_date = str(date[0]) +'/'+ str_nb(date[1]) +'/'+ str_nb(date[2]) +' '+ str_nb(date[3]) +':'+ str_nb(date[4]) +':'+ str_nb(date[5])
-        entete = 'Head Début : ' + str_date
-        entete += " , Temps d'exécution : " + str(int(time_exec)) + " secondes"
+        entete = 'Head Debut : ' + str_date
+        entete += " , Temps d'execution : " + str(int(time_exec)) + " secondes"
         entete += ' , Variation de ' + p['name'] + ' entre ' + str(p['min']) + ' et ' + str(p['max'])
         if p['proba']:
             entete += ' (en %)'
         entete += ' avec un pas de ' + str(p['pas'])
-        entete += ', Variation de nmb_gens de '+ str(min_gen) + ' à ' + str(max_gen)
+        entete += ', Variation de nmb_gens de '+ str(min_gen) + ' a ' + str(max_gen)
 
         #On écrit les données en elles mêmes :
         ch = entete + '\n'
