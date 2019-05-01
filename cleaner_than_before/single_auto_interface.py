@@ -60,10 +60,12 @@ default_parameters = [1000, 40, 0.5, 0.5]
 #On définie les caractéristiques des paramètres que l'on va faire varier :
 #indice : l'indice dans la liste parameters qu'il faut passer dans resolve_problem()
 #proba : si le parametre est une probabilitée ou pas (on la rentre alors en %)
-parametres = [{'name' : 'pop_size' , 'indice' : 0 , 'min' : 10 , 'max' : 2000 , 'pas' : 100 , 'proba' : False},
+parametres = [
 {'name' : 'p_crossover' , 'indice' : 2 , 'min' : 0 , 'max' : 100 , 'pas' : 10 , 'proba' : True},
 {'name' : 'p_mutation' , 'indice' : 3 , 'min' : 0 , 'max' : 100 , 'pas' : 10 , 'proba' : True}
 ]
+#{'name' : 'pop_size' , 'indice' : 0 , 'min' : 10 , 'max' : 2000 , 'pas' : 100 , 'proba' : False},
+
 
 #La façon dont le nombre de génération évolue :
 min_gen = 0

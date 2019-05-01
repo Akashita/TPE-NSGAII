@@ -82,6 +82,8 @@ def graph_tableau(tab,pas_courbes =1, min_courbes=0,pas_values=1):
         ligne = [tab[i][j] for j in range(0, len(tab[i]), pas_values)]
         plt.plot(ligne)
     plt.legend(range(min_courbes,len(tab),pas_courbes))
+    plt.xlabel('Générations')
+    plt.ylabel('Solutions')
     plt.show()
 
 
@@ -89,9 +91,9 @@ def graph_tableau(tab,pas_courbes =1, min_courbes=0,pas_values=1):
 
 #graph_tableau(lissage_tab(liste_from_csv('Ackley_p_crossover_251532.csv'),step=100),pas_values = 1)
 
-#graph_tableau(lissage_tab(moyenne_fichier('SCH*pop*.csv'),step=1),pas_values = 1)
+#graph_tableau(moyenne_fichier('Ackley*mut*.csv'),pas_values = 1)
+graph_tableau(lissage_tab(moyenne_fichier('Ackley*mut*.csv'),step=100),pas_values = 1)
 
-graph_tableau(lissage_tab(liste_from_csv('SCH_pop_size_292309.csv'),step=5))
 
 
 # Fin du fichier
