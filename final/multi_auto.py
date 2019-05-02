@@ -1,9 +1,11 @@
-from single import *
+from multi import *
 import time
 import inspyred
 import matplotlib.pyplot as plt
 
-
+import inspyred
+from inspyred import ec
+from inspyred.benchmarks import Benchmark
 
 def str_nb(n,taille = 2):
     """écrit les nombres à la bonne taille, avec des 0 devant si ils sont trops courts"""
@@ -41,21 +43,23 @@ def var_nmb_gen(parameters,min_g,max_g,pas_g):
     for n_gen in range(min_g , max_g , pas_g):
         parameters[1] = n_gen
         affiche('nmb_gen = '+ str(n_gen) + ' / ' + str(max_g),(0,60))
-        final_pop = resolve_single(problem, parameters)
-        liste = [Z.fitness for Z in final_pop]
-        minimum.append( round( min(liste) , 4))
+        final_pop = resolve_multi(problem, parameters)
+        coords = transform_coord(final_pop, objective)
+        hypervolume = inspyred.ec.analysis.hypervolume(coords[3], reference_point=(10,10,10))
+        minimum.append( round( hypervolume , 4))
         affiche('temps total : ' + str(int((time.time() - first_start) // 60)) + ' minutes',(0,140))
     return minimum[:]
 
 #On choisit le probleme pour lequel on va faire les tests :
-problem = inspyred.benchmarks.Ackley()
-name_problem = 'Ackley' #(seulement pour le nom des fichiers)
+problem = inspyred.benchmarks.DTLZ7(objectives=3, dimensions=3)
+name_problem = 'DTLZ7' #(seulement pour le nom des fichiers)
+objective = 3
 
 interface = True
 
 #On défini les paramètres par défaut :
 # pop_size, nmb_gen, p_crossover, p_mutation
-default_parameters = [1000, 40, 0.5, 0.5]
+default_parameters = [100, 40, 0.5, 0.5]
 
 #On définie les caractéristiques des paramètres que l'on va faire varier :
 #indice : l'indice dans la liste parameters qu'il faut passer dans resolve_problem()
@@ -65,11 +69,9 @@ parametres = [{'name' : 'pop_size' , 'indice' : 0 , 'min' : 10 , 'max' : 2000 , 
 {'name' : 'p_mutation' , 'indice' : 3 , 'min' : 0 , 'max' : 100 , 'pas' : 10 , 'proba' : True}
 ]
 
-
-
 #La façon dont le nombre de génération évolue :
 min_gen = 0
-max_gen = 10000
+max_gen = 100
 pas_gen = 10
 
 if interface:
@@ -93,9 +95,6 @@ def affiche(ch,pos):
         pygame.display.flip()
     else:
         print(ch)
-
-
-
 
 
 #On stocke dans exec times les temps d'exécution des différents problemes
@@ -155,13 +154,13 @@ while True:
 
         #On écrit l'entête du fichier (date, temps d'exécutions, paramètres) :
         str_date = str(date[0]) +'/'+ str_nb(date[1]) +'/'+ str_nb(date[2]) +' '+ str_nb(date[3]) +':'+ str_nb(date[4]) +':'+ str_nb(date[5])
-        entete = 'Head Debut : ' + str_date
-        entete += " , Temps d'execution : " + str(int(time_exec)) + " secondes"
+        entete = 'Head Début : ' + str_date
+        entete += " , Temps d'exécution : " + str(int(time_exec)) + " secondes"
         entete += ' , Variation de ' + p['name'] + ' entre ' + str(p['min']) + ' et ' + str(p['max'])
         if p['proba']:
             entete += ' (en %)'
         entete += ' avec un pas de ' + str(p['pas'])
-        entete += ', Variation de nmb_gens de '+ str(min_gen) + ' a ' + str(max_gen)
+        entete += ', Variation de nmb_gens de '+ str(min_gen) + ' à ' + str(max_gen)
 
         #On écrit les données en elles mêmes :
         ch = entete + '\n'

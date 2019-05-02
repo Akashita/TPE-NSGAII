@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from os import system
+from os import system,chdir
 
 def moyenne(L):
     if len(L) == 0:
@@ -86,6 +86,7 @@ def graph_tableau(tab,pas_courbes =1, min_courbes=0,pas_values=1):
     plt.ylabel('Solutions')
     plt.show()
 
+chdir('data')
 
 #graph_tableau(moyenne_fichier('Ackley_p_mut*.csv'),pas_courbes = 3,min_courbes = 0,pas_values = 10)
 
