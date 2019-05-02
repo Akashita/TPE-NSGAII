@@ -8,7 +8,7 @@ Swan Launay**
 Lors du projet nous souhaitions observer l'influence des paramètres des algorithmes génétiques sur la résolution de problèmes. Nous avons alors créé ce programme qui trace l'évolution de la solution *(ou de l'hypervolume du front de pareto en multi objectif)* en fonction du nombre de génération. Le but est aussi de générer ces courbes avec des paramètres différents pour pouvoir ensuite comprendre leur influence.
 
 ## Divers :
-- Nous utilisons la bibliothèque python **Inspyred** *( aarongarrett.github.io/inspyred/ )*.  
+- Nous utilisons la bibliothèque python [Inspyred](aarongarrett.github.io/inspyred/)
 - La fonction **liste_fichiers** dans le fichier **moyennes.py** ne fonctionne à priori que sur linux.  
 - Pour suivre l'algorithme nous utilisons une interface **pygame**, il est cependant possible de supprimer l'affichage en mettant la variable **interface** à **False** dans les fichiers **auto.py**. *(l'interface semble ne pas fonctionner sous windows)*
 
