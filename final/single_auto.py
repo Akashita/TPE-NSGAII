@@ -2,6 +2,7 @@ from single import *
 import time
 import inspyred
 import matplotlib.pyplot as plt
+from os import chdir
 
 
 
@@ -95,7 +96,7 @@ def affiche(ch,pos):
         print(ch)
 
 
-
+chdir('data') # Pour enregistrer les fichiers au bon endroit
 
 
 #On stocke dans exec times les temps d'exécution des différents problemes

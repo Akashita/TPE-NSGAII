@@ -3,6 +3,8 @@ import time
 import inspyred
 import matplotlib.pyplot as plt
 
+from os import chdir
+
 import inspyred
 from inspyred import ec
 from inspyred.benchmarks import Benchmark
@@ -49,6 +51,8 @@ def var_nmb_gen(parameters,min_g,max_g,pas_g):
         minimum.append( round( hypervolume , 4))
         affiche('temps total : ' + str(int((time.time() - first_start) // 60)) + ' minutes',(0,140))
     return minimum[:]
+
+chdir('data') # Pour sauvegarder les fichiers au bon endroit
 
 #On choisit le probleme pour lequel on va faire les tests :
 problem = inspyred.benchmarks.DTLZ7(objectives=3, dimensions=3)
